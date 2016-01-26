@@ -1,7 +1,7 @@
 from matplotlib.pylab import *
 from numpy import *
 
-N = 10000					# number of terms in fourier series
+N = 500						# number of terms in fourier series
 x = linspace(0,1,N)			# mesh fineness
 
 def ck(k):						# fourier coefficients
@@ -30,7 +30,7 @@ print "Num. fourier terms: ", N
 
 # norms
 L2 = sum((g-f**2)/len(f))
-print  "L2_norm: ", sqrt(L2) 
+print  "L2_norm: ", sqrt(abs(L2)) 
 
 L_max = max(f)-1
 print "L_max: ", L_max
@@ -38,10 +38,11 @@ print "L_max: ", L_max
 Du = dudx(g-f)
 H1 = sum(Du**2 + (g-f)**2 )/len(Du)
 print "H1: ", sqrt(H1) 
-
+"""
 plot(x,g,label="Exact solution")
 plot(x,f,label="Fourier solution")
 xlabel('x')
 title('Gibbs phenomenon, terms in fourier series: {}'.format(N))
 legend()
 show()
+"""
