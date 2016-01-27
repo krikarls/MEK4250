@@ -1,3 +1,5 @@
+x-points: 2*(Num. fourier terms)
+
 Num. fourier terms:  100
 L2_norm:  0.0446790427049
 L_max:  0.0876665798983
