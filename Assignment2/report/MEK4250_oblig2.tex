@@ -159,12 +159,22 @@ $C = 1/(D^2+1)$ and we are very happy.
 
 \subsection{Looking into the error estimate (Exercise 7.6)}
 
+To investigate the error estimate
+\begin{align*}
+||E_u||_1 + ||E_p||_0 \leq Ch^k ||u||_{k+1} + Dh^{l+1}||p||_{l+1}
+\end{align*}
+we define the \emph{Stokes problem}:
+\begin{align*}
+-\Delta \mathbf{u} + \nabla p = \mathbf{f}, \quad \mathbf{u} = sin(\pi y) \mathbf{i} + cos(\pi x) \mathbf{j}.
+\end{align*}
+
+Computing errors and stuff...
 
 \begin{figure}[h!] 
 \begin{center}
   \includegraphics[scale=0.25]{stokes_loglog.png}
   \end{center}
-  \caption{Log-log plot of the wall shear stress error for different combinations of polynomials.}
+  \caption{Log-log plot of error for different combinations of polynomials.}
    \label{fig:stokes}
 \end{figure}
 
