@@ -155,7 +155,6 @@ We start by rewriting the left hand side and applying \emph{Poincaré}
 \end{align*}
 $C = 1/(D^2+1)$ and we are very happy. 
 
-\newpage
 
 \subsection{Looking into the error estimate (Exercise 7.6)}
 
@@ -169,14 +168,6 @@ we define the \emph{Stokes problem}:
 \end{align*}
 
 Computing error and convergence rates for different combinations of polynomials we obtained the results below. 
-
-\begin{figure}[h!] 
-\begin{center}
-  \includegraphics[scale=0.25]{stokes_loglog.png}
-  \end{center}
-  \caption{Log-log plot of error for different combinations of polynomials.}
-   \label{fig:stokes}
-\end{figure}
 
 \begin{table}[H]
 \centering
@@ -196,8 +187,22 @@ Computing error and convergence rates for different combinations of polynomials 
 \label{tab:vel}
 \end{table}
 
+From figure 1 and table 1 we see that two of the polynomial-combinations, $P_4-P_2$ and $P_3-P_2$, yields the same results. Why is that? In search of answers we turn to the error estimate for the respective combinations of elements:
+\begin{align*}
+P_4-P_2: \quad ||E_u||_1 + ||E_p||_0 &\leq Ch^4 ||u||_{5} + Dh^{3}||p||_{3} \\
+P_3-P_2: \quad ||E_u||_1 + ||E_p||_0 &\leq Ch^3 \left( ||u||_{4} + ||p||_{3} \right)
+\end{align*}
+For the first error estimate, $P_4-P_2$, the dominating term on the right hand side is the one related to the pressure, because the part related to the velocity tends to zero much faster as the mesh is refined. We are in a sense limited by the order of the polynomial we have for pressure and can obtain no better convergence than for $P_3-P_2$.
 
-\newpage 
+The same reasoning goes for last two combinations of elements. 
+
+\begin{figure}[h!] 
+\begin{center}
+  \includegraphics[scale=0.25]{stokes_loglog.png}
+  \end{center}
+  \caption{Log-log plot of error for different combinations of polynomials.}
+   \label{fig:stokes}
+\end{figure}
 
 \subsection{Approximation of the shear stress (Exercise 7.7)}
 
@@ -207,16 +212,6 @@ In this section we will have a look at the order of approximation for the \emph{
 \end{align*}
 
 We study this by computing the wall shear stress analytically, then numerically and last compute the error. 
-
-\begin{figure}[h!] 
-\begin{center}
-  \includegraphics[scale=0.3]{shear_loglog.png}
-  \end{center}
-  \caption{Log-log plot of the wall shear stress error($L^2$) for different combinations of polynomials.}
-   \label{fig:shearstress}
-\end{figure}
-
-By looking at the convergence rates(table \ref{tab:shear}) and the log-log plot of the error(figure \ref{fig:shearstress}) one can observe that error behaves like a $H^1-$norm, even though we used a $L^2-$norm to compute the error. That should come as no surprise to the shrewd reader, as the shear stress involves the derivative of the velocity, as does the $H^1-$ norm. In other words; the results for the convergence rates here are the same as in the previous section(table \ref{tab:vel}) where we measured the error in velocity in $H^1$.
 
 \begin{table}[H]
 \centering
@@ -235,6 +230,16 @@ $r_3$ & 4.021954 & 3.006015 & 3.065985 & 2.054565 \\
 \end{tabular}
 \label{tab:shear}
 \end{table}
+
+By looking at the convergence rates(table \ref{tab:shear}) and the log-log plot of the error(figure \ref{fig:shearstress}) one can observe that error behaves like a $H^1-$norm, even though we used a $L^2-$norm to compute the error. That should come as no surprise to the shrewd reader, as the shear stress involves the derivative of the velocity, as does the $H^1-$ norm. In other words; the results for the convergence rates here are of the same order as in the previous section(table \ref{tab:vel}) where we measured the error in velocity in $H^1$.
+
+\begin{figure}[h!] 
+\begin{center}
+  \includegraphics[scale=0.3]{shear_loglog.png}
+  \end{center}
+  \caption{Log-log plot of the wall shear stress error($L^2$) for different combinations of polynomials.}
+   \label{fig:shearstress}
+\end{figure}
 
 \newpage
 
@@ -266,7 +271,7 @@ Problem (2.1)-(2.2) will now be solved using finite element methods in FEniCS. T
 We think no further, and ignore what we have learned, and implement and solve problem (2.1)-(2.2) in FEniCS as:
 
 \begin{framed}
-\texttt{a = inner(grad(u), grad(v))*dx - inner(grad(div(u)),v)*dx \\
+\texttt{a = inner(grad(u),grad(v))*dx-lmbda*inner(grad(div(u)),v)*dx \\
 L = inner(f,v)*dx}  
 \end{framed} 
 
