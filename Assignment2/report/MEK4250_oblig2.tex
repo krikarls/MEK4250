@@ -150,7 +150,7 @@ We start by rewriting the left hand side and applying \emph{Poincaré}
 \begin{align*}
 ||u||_1^2 &= ||u||_0^2 + ||\nabla u||_0^2 \\
  &\leq (D||\nabla u||_0^2)+||\nabla u||_0^2 \\
- &\leq (D^2+1)||\nabla u||^2_0 \\
+ &= (D^2+1)||\nabla u||^2_0 \\
  &=  (D^2+1)\int \nabla u : \nabla u dx
 \end{align*}
 $C = 1/(D^2+1)$ and we are very happy. 
@@ -168,7 +168,7 @@ we define the \emph{Stokes problem}:
 -\Delta \mathbf{u} + \nabla p = \mathbf{f}, \quad \mathbf{u} = sin(\pi y) \mathbf{i} + cos(\pi x) \mathbf{j}.
 \end{align*}
 
-Computing errors and stuff...
+Computing error and convergence rates for different combinations of polynomials we obtained the results below. 
 
 \begin{figure}[h!] 
 \begin{center}
@@ -193,6 +193,7 @@ Computing errors and stuff...
 4.03899 & 4.00955 & 2.98766 & 2.99487 & 2.98475 & 2.99505 & 2.02451 & 2.04127 \\
 \hline
 \end{tabular}
+\label{tab:vel}
 \end{table}
 
 
@@ -211,16 +212,15 @@ We study this by computing the wall shear stress analytically, then numerically 
 \begin{center}
   \includegraphics[scale=0.3]{shear_loglog.png}
   \end{center}
-  \caption{Log-log plot of the wall shear stress error for different combinations of polynomials.}
+  \caption{Log-log plot of the wall shear stress error($L^2$) for different combinations of polynomials.}
    \label{fig:shearstress}
 \end{figure}
 
-It seems to be the case that only degree of the \emph{"velocity polynomial"} matters, see figure \ref{fig:shearstress} and table \ref{tab:shear} . That comes as no shock as the shear stress is only related to the velocity. However, it is surprising that the rate of convergence drop by two orders as the order of polynomial is reduced by only one. 
-
+By looking at the convergence rates(table \ref{tab:shear}) and the log-log plot of the error(figure \ref{fig:shearstress}) one can observe that error behaves like a $H^1-$norm, even though we used a $L^2-$norm to compute the error. That should come as no surprise to the shrewd reader, as the shear stress involves the derivative of the velocity, as does the $H^1-$ norm. In other words; the results for the convergence rates here are the same as in the previous section(table \ref{tab:vel}) where we measured the error in velocity in $H^1$.
 
 \begin{table}[H]
 \centering
-\caption{Computed convergence rates $r_n$ for different combinations of polynomials. Increase in $n$ refers to refined mesh. }
+\caption{Computed convergence rates $r_n$ using a $L^2-$norm for different combinations of polynomials. Increase in $n$ refers to refined mesh. }
 \vspace{3mm}
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}
 \hline
@@ -270,7 +270,7 @@ We think no further, and ignore what we have learned, and implement and solve pr
 L = inner(f,v)*dx}  
 \end{framed} 
 
-The results obtained by this approach are very poor and can be viewed in Table FAKGMAK. 
+The results obtained by this approach are very poor and can be viewed in table \ref{tab:err1} and \ref{tab:con1}. 
 
 \begin{table}[H]
 \centering
@@ -291,6 +291,7 @@ $\lambda\backslash$N & 8 & 16 & 32 & 64 \\
 10000 & 1.426623 & 1.681094 & 3.957783 & 1.143778 \\
 \hline
 \end{tabular}
+\label{tab:err1}
 \end{table}
 
 \begin{table}[H]
@@ -312,18 +313,20 @@ $\lambda \backslash$N & $r_1$ & $r_2$ & $r_3$ \\
 10000 & -0.236797 & -1.235292 & 1.790886 \\
 \hline
 \end{tabular}
+\label{tab:con1}
 \end{table}
 
 
 So what is happening? 
 
-We can definitely see that when $\lambda$ gets bigger the numerical solution is bad. Only for $\lambda=1$ are the results reasonable. The convergence rates are in this case stable, but lower than expected. If we plot and compare the solutions we see that the deformations/displacements computed numerically are less then they should be. One might even say that the deformation seems to be \emph{"locked"}. See Figure.
+We can definitely see that when $\lambda$ gets bigger the numerical solution is bad. Only for $\lambda=1$ are the results reasonable. The convergence rates are in this case stable, but lower than expected. If we plot and compare the solutions we see that the deformations/displacements computed numerically are less then they should be. One might even say that the deformation seems to be \emph{"locked"}, see figure \ref{fig:locking}.
 
 \begin{figure}[h!] 
 \begin{center}
   \includegraphics[scale=0.4]{locking.png}
   \end{center}
   \caption{Comparing analytical and numerical solution for approach \#1.}
+  \label{fig:locking}
 \end{figure}
 
 This is because we use elements that approximate the divergence poorly and when that term of the equation starts to dominate things fall apart. This phenomenon is called \emph{locking.} 
